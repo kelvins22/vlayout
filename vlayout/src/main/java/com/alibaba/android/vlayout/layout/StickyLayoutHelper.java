@@ -56,6 +56,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
 
     private View mFixView = null;
     private boolean mDoNormalHandle = false;
+    private boolean mIsStickyNow = false;
 
 
     public StickyLayoutHelper() {
@@ -76,7 +77,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
     }
 
     public boolean isStickyNow() {
-        return !mDoNormalHandle;
+        return mIsStickyNow;
     }
 
     @Override
@@ -159,6 +160,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
                 if ((remainingSpace < (mOffset + mAdjuster.bottom) && layoutState.getItemDirection() == LayoutStateWrapper.ITEM_DIRECTION_TAIL)
                         || (bottom > mMarginBottom + mOffset + mAdjuster.bottom)) {
                     mDoNormalHandle = false;
+                    mIsStickyNow = true;
                     mFixView = view;
 
                     bottom = orientationHelper.getEndAfterPadding() - mMarginBottom - mOffset - mAdjuster.bottom;
@@ -169,6 +171,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
                 if ((remainingSpace < (mOffset + mAdjuster.top) && layoutState.getItemDirection() == LayoutStateWrapper.ITEM_DIRECTION_HEAD)
                         || (top < mMarginTop + mOffset + mAdjuster.top)) {
                     mDoNormalHandle = false;
+                    mIsStickyNow = true;
                     mFixView = view;
                     top = orientationHelper.getStartAfterPadding() + mMarginTop + mOffset + mAdjuster.top;
                     bottom = top + result.mConsumed;
@@ -191,6 +194,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
             if (helper.getReverseLayout() || !mStickyStart) {
                 if (remainingSpace < mOffset + mAdjuster.right) {
                     mDoNormalHandle = false;
+                    mIsStickyNow = true;
                     mFixView = view;
 
                     right = orientationHelper.getEndAfterPadding() - mOffset - mAdjuster.right;
@@ -199,6 +203,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
             } else {
                 if (remainingSpace < mOffset + mAdjuster.left) {
                     mDoNormalHandle = false;
+                    mIsStickyNow = true;
                     mFixView = view;
                     left = orientationHelper.getStartAfterPadding() + mOffset + mAdjuster.left;
                     right = result.mConsumed;
@@ -220,6 +225,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
             helper.addChildView(layoutState, view);
             handleStateOnResult(result, view);
             mFixView = null;
+            mIsStickyNow = false;
         } else {
             // result.mConsumed += mOffset;
         }
@@ -241,6 +247,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
         }
 
         mDoNormalHandle = false;
+//        mIsStickyNow = false;
     }
 
 
@@ -314,6 +321,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
                         }
                         if (top >= mOffset + mAdjuster.top) {
                             mDoNormalHandle = true;
+                            mIsStickyNow = false;
                         }
 
                         break;
@@ -335,6 +343,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
                         }
                         if (bottom >= mOffset + mAdjuster.bottom) {
                             mDoNormalHandle = true;
+                            mIsStickyNow = false;
                         }
                         break;
                     }
@@ -381,6 +390,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
                             bottom = top + consumed;
                             index = i;
                             mDoNormalHandle = true;
+//                            mIsStickyNow = false;
                             break;
                         }
                     }
@@ -400,6 +410,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
                             top = bottom - consumed;
                             index = i + 1;
                             mDoNormalHandle = true;
+//                            mIsStickyNow = false;
                             break;
                         }
                     }
@@ -522,6 +533,7 @@ public class StickyLayoutHelper extends FixAreaLayoutHelper {
                 // TODO: reuse views
                 // mFixView = recycler.getViewForPosition(mPos);
                 mFixView = eView;
+                mIsStickyNow = true;
             }
         }
 
